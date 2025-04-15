@@ -1,16 +1,22 @@
-import { Head, useForm } from "@inertiajs/react"
+import { Head, useForm } from "@inertiajs/react";
+import { useRoute } from "../../../vendor/tightenco/ziggy";
 
-export default function Create() {
+
+export default function Edit({ post }) {
+
+    const route = useRoute();
+
     // console.log(useForm());
-    const { data, setData, post, processing, errors } = useForm({
-        'body': '',
+    const { data, setData, put, processing, errors } = useForm({
+        'body': post.body,
     })
 
     // function to handle form submission
     function submit(e) {
         e.preventDefault();
         // post the data to the server
-        post('/posts');
+        // put(`/posts/${post.id}`);
+        put(route('posts.update', post));
     }
 
     // console log the errors
@@ -19,7 +25,7 @@ export default function Create() {
 
     return (
         <>
-            <Head title="Create">
+            <Head title="Edit">
                 <meta
                     head-key="description"
                     name="description"
@@ -27,7 +33,7 @@ export default function Create() {
                 />
             </Head>
 
-            <h1 className="title">Create a new post </h1>
+            <h1 className="title">Update the post </h1>
             {/* get data test, get data out of the form */}
             {/* {data.body} */}
 
@@ -40,7 +46,7 @@ export default function Create() {
                     {/* errors */}
                     {errors.body && <p className="error">{errors.body}</p>}
 
-                    <button className="primary-btn mt-4" disabled={processing} >Create Post</button>
+                    <button className="primary-btn mt-4" disabled={processing} >Update Post</button>
                 </form>
             </div>
         </>
